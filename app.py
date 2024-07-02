@@ -94,7 +94,7 @@ if submit:
                 buffer.seek(0)
                 
                 # Prepare the files for upload to Flask server
-                files = {'file': buffer}
+                files = {'file.png': buffer}
                 
                 # Send POST request to upload the image to Flask server
                 upload_response = requests.post(f'{FLASK_SERVER_URL}/upload', files=files)
