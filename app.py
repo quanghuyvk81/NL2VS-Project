@@ -67,21 +67,21 @@ if submit:
         if response.status_code == 200:
             file_url = response.json().get('file_url')
             full_file_url = f"{FLASK_SERVER_URL}{file_url}"
-            st.write(full_file_url)
+            # st.write(full_file_url)
             # Load the uploaded file into a dataframe
             if uploaded_file.name.endswith('.csv'):
-                df = pd.read_csv(uploaded_file)
+                df = pd.read_csv(full_file_url)
             elif uploaded_file.name.endswith('.xlsx'):
-                df = pd.read_excel(uploaded_file)
+                df = pd.read_excel(full_file_url)
             else:
                 st.error("Định dạng file không phù hợp")
                 st.stop()
 
             response = visualize.generate_response(openai_key, demand, uploaded_file, num_of_columns, columns_name, columns_type, full_file_url)
-            st.write(response)
+            # st.write(response)
             code = extract_python_code(response)
             if code:
-                st.code(code, language='python')
+                # st.code(code, language='python')
                 # Execute the extracted code
                 exec_globals = {'plt': plt, 'pd': pd, 'df': df}
                 exec(code, exec_globals)
@@ -92,13 +92,13 @@ if submit:
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
+
                 
                 # Prepare the files for upload to Flask server
-                files = {'file.png': buffer}
+                files = {'file': ('plot.png', buffer, 'image/png')}
                 
                 # Send POST request to upload the image to Flask server
                 upload_response = requests.post(f'{FLASK_SERVER_URL}/upload', files=files)
-                # Save img to server
 
                 if upload_response.status_code == 200:
                     img_url = upload_response.json().get('file_url')

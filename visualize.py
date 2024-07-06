@@ -55,7 +55,7 @@ def generate_response(api_key, demand, uploaded_file, num_of_columns, columns_na
 def generate_img_comment(api_key, demand, img_url):
     client = OpenAI(api_key=api_key, base_url="https://api.perplexity.ai")
 
-    prompt = f"Chỉ dựa dữ liệu lấy được từ bức ảnh, rút ra kết luận và trả lời câu hỏi bằng tiếng Việt: {demand}\n\nBức ảnh: {img_url}\n\n(Chỉ dùng dữ liệu từ bức ảnh, không cần thêm thông tin khác)"
+    prompt = f"Chỉ dựa dữ liệu lấy được từ bức ảnh, rút ra kết luận và trả lời câu hỏi bằng tiếng Việt: {demand}\n\nBức ảnh: {img_url}\n\n"
 
     messages = [
         {
