@@ -3,12 +3,13 @@ matplotlib==2.2.5
 matplotlib==3.7.1
 matplotlib==3.8.2
 matplotlib==3.8.0
-openai==1.35.7
+openai==1.35.13
 pandas==1.4.4
 pandas==1.5.3
 Pillow==10.1.0
 Pillow==10.0.1
 Pillow==10.4.0
+protobuf==3.20.3
 Requests==2.32.3
 seaborn==0.11.2
 streamlit==1.36.0
