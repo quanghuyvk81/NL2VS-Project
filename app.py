@@ -29,7 +29,7 @@ st.write('## Create plot with natural language')
 
 # create a text input that hides the input
 openai_key = st.text_input('OpenAI key:', type='password', key='openai_key')
-
+gemini_key = st.text_input('Gemini key:', type='password', key='gemini_key')
 # create a text input to visualize
 demand = st.text_input('Bạn muốn trực quan như thế nào?', key='demand_input')
 
@@ -95,8 +95,8 @@ if submit:
             if upload_response.status_code == 200:
                 img_url = upload_response.json().get('file_url')
                 full_img_url = f"{FLASK_SERVER_URL}{img_url}"
-                st.write(full_img_url)
+                # st.write(full_img_url)
 
-                insights = visualize.generate_img_comment(openai_key, demand, full_img_url)
+                insights = visualize.generate_img_comment(gemini_key, demand, full_img_url)
                 st.write("## Nhận xét từ hình ảnh")
                 st.write(insights)
