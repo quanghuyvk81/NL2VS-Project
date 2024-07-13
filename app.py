@@ -28,7 +28,7 @@ st.write('# App')
 st.write('## Create plot with natural language')
 
 # create a text input that hides the input
-openai_key = st.text_input('OpenAI key:', type='password', key='openai_key')
+perplexity_key = st.text_input('Perplexity key:', type='password', key='Perplexity')
 gemini_key = st.text_input('Gemini key:', type='password', key='gemini_key')
 # create a text input to visualize
 demand = st.text_input('Bạn muốn trực quan như thế nào?', key='demand_input')
@@ -47,6 +47,17 @@ with st.sidebar:
             st.success("File uploaded successfully")
 
     file_path = file_selector()
+st.write("### Dưới đây là file bạn đã chọn:")
+if file_path:
+        if file_path.endswith('.csv'):
+            df = pd.read_csv(file_path)
+        elif file_path.endswith('.xlsx'):
+            df = pd.read_excel(file_path)
+        else:
+            st.error("Định dạng file không phù hợp")
+            st.stop()
+        if df is not None:
+            st.write(df)
 
 # create a button to submit the form
 submit = st.button('Submit', key='submit_button')
@@ -78,7 +89,7 @@ if submit:
                 columns_type.append(['Boolean'])
 
         full_file_url = f"{FLASK_SERVER_URL}{file_path[1:]}"
-        response = visualize.generate_response(openai_key, demand, num_of_columns, columns_name, columns_type, full_file_url)
+        response = visualize.generate_response(perplexity_key, demand, num_of_columns, columns_name, columns_type, full_file_url)
         code = extract_python_code(response)
         if code:
             exec_globals = {'plt': plt, 'pd': pd, 'df': df}
