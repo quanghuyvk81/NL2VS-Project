@@ -89,8 +89,12 @@ if submit:
                 columns_type.append(['Boolean'])
 
         full_file_url = f"{FLASK_SERVER_URL}{file_path[1:]}"
-        response = visualize.generate_response(perplexity_key, demand, num_of_columns, columns_name, columns_type, full_file_url)
+        response = visualize.generate_response(perplexity_key, demand, num_of_columns, columns_name, columns_type, file_path)
+
         code = extract_python_code(response)
+        st.write("## Code trả về từ mô hình Perplexity")
+        # write python code
+        st.code(code, language='python')
         if code:
             exec_globals = {'plt': plt, 'pd': pd, 'df': df}
             exec(code, exec_globals)
