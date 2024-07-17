@@ -7,17 +7,17 @@ from PIL import Image
 import os
 
 
-def generate_response(api_key, demand, num_of_columns, columns_name, columns_type, full_file_url):
+def generate_response(api_key, demand, num_of_columns, columns_name, columns_type, file_path):
     client = OpenAI(api_key=api_key, base_url="https://api.perplexity.ai")
     # read uploaded file from full_file_url
-    response = requests.get(full_file_url)
-    if response.status_code == 200:
-        uploaded_file = response.content
+    # response = requests.get(full_file_url)
+    # if response.status_code == 200:
+    #     uploaded_file = response.content
+    uploaded_file = True
     if uploaded_file:
         # Get uploaded_file's name
-        file_name = full_file_url.split('/')[-1]
-
-        first_prompt = f"\"\"\"\nDùng tập dữ liệu gọi là df từ {file_name}. Đây là đường dẫn đến file: {full_file_url}\n\"\"\""
+        file_name = file_path.split('/')[-1]
+        first_prompt = f"\"\"\"\nDùng tập dữ liệu gọi là df từ {file_name}. Đây là đường dẫn đến file: {file_path}\n\"\"\""
         second_prompt = ""
         for i in range(num_of_columns):
             if columns_type[i][0] == 'Categorical':
@@ -30,7 +30,7 @@ def generate_response(api_key, demand, num_of_columns, columns_name, columns_typ
                 second_prompt += f"Cột {columns_name[i]} có kiểu boolean.\n"
         
         third_prompt = "Dán nhãn các trục một cách thích hợp với biểu đồ. Thêm tiêu đề dùng tiếng Việt và để trống phụ đề của subplot trong fig, thêm legend nếu cần thiết."
-        forth_prompt = f"Dùng phiên bản Python 3.11, tạo 1 script duy nhất dùng dữ liệu df để trực quan yêu cầu sau: {demand}."
+        forth_prompt = f"Dùng phiên bản Python 3.11, tạo 1 script duy nhất dùng dữ liệu df để trực quan yêu cầu sau dùng tiếng Việt: {demand}."
 
         description_prompt = f"{first_prompt}\n{second_prompt}\n{third_prompt}\n{forth_prompt}\n"
         code_prompt = '''
@@ -56,7 +56,7 @@ def generate_response(api_key, demand, num_of_columns, columns_name, columns_typ
             temperature=0,
             max_tokens=500,
         )
-
+        print(prompt)
         return response.choices[0].message.content.strip()
 
     return None
